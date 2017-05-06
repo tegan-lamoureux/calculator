@@ -27,22 +27,22 @@ namespace WindowsFormsApp1
 
         private void handle_numbers_click(char value)
         {
-            // Used to check whether we just performed an operation (in which case we need to reset the field.
+            // Used to check whether we just performed an operation. If not, keep parsing and building input.
             if (!this.operation_performed && this.textBox_result.Text != "0.0")
             {
+                // Check if the last op was an equals, in which case we start a new calculation (and reset).
                 if (this.last_operation == '=')
                 {
+                    // reset everything
                     this.textBox_result.Text = value.ToString();
                     this.operation_performed = false;
-
                     this.running_value = 0.0;
-
                     this.last_operation = ' ';
                 }
-                else
+                else // else we're in the middle of input, keep concating the string.
                     this.textBox_result.Text += value;
             }
-            else
+            else // Else we just performed a calc, clear the field and get ready for new input.
             {
                 this.textBox_result.Text = value.ToString();
                 this.operation_performed = false;
@@ -51,6 +51,7 @@ namespace WindowsFormsApp1
 
         private void button_decimal_Click(object sender, EventArgs e)
         {
+            // FIXME: this is a bit buggy on fringe cases, fix this.
             if (this.textBox_result.Text.Contains(".") == false)
             {
                 this.textBox_result.Text += ".";
@@ -109,9 +110,10 @@ namespace WindowsFormsApp1
 
         private void button_equals_Click(object sender, EventArgs e)
         {
+            // Switch on the last operation performed, to finish the calculation.
             switch (this.last_operation)
             {
-                case '=': // we need to repeat the last operation.
+                case '=': // In the case that = was pressed twice, repeat the previous calculation.
                     switch (this.last_operation_previous)
                     {
                         case '+':
@@ -161,13 +163,16 @@ namespace WindowsFormsApp1
                     break;
             }
 
+            // Update our answer field.
             this.textBox_result.Text = this.running_value.ToString();
 
+            // Keep track of last op (because we got here with an '=' click.
             this.last_operation = '=';
         }
 
         private void button_add_Click(object sender, EventArgs e)
         {
+            // Don't operate on empty values.
             if (this.running_value != 0.0)
             {
                 // Here to stop the automatic subtract behavior when - pressed after an equals or on empty.
