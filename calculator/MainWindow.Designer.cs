@@ -250,7 +250,6 @@
             // 
             // button_clear
             // 
-            this.button_clear.Enabled = false;
             this.button_clear.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_clear.Location = new System.Drawing.Point(69, 46);
             this.button_clear.Name = "button_clear";

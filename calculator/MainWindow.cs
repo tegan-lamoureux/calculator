@@ -29,7 +29,19 @@ namespace WindowsFormsApp1
         {
             // Used to check whether we just performed an operation (in which case we need to reset the field.
             if (!this.operation_performed && this.textBox_result.Text != "0.0")
-                this.textBox_result.Text += value;
+            {
+                if (this.last_operation == '=')
+                {
+                    this.textBox_result.Text = value.ToString();
+                    this.operation_performed = false;
+
+                    this.running_value = 0.0;
+
+                    this.last_operation = ' ';
+                }
+                else
+                    this.textBox_result.Text += value;
+            }
             else
             {
                 this.textBox_result.Text = value.ToString();
@@ -200,8 +212,18 @@ namespace WindowsFormsApp1
 
         private void button_clear_Click(object sender, EventArgs e)
         {
+            // Clear the text field (used as numerical input).
             this.textBox_result.Text = "0.0";
-            this.last_operation = this.last_operation_previous = ' ';
+
+            // And all clear if we were on the result of a previous operation
+            if (this.last_operation == '=')
+            {
+                this.running_value = 0.0;
+                this.running_value_previous = 0.0;
+                this.last_operation = ' ';
+                this.last_operation_previous = ' ';
+                this.operation_performed = false;
+            }
         }
 
         private void button_subtract_Click(object sender, EventArgs e)
